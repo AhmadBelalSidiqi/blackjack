@@ -3,7 +3,7 @@ package com.pluralsight;
 import java.util.Collections;
 import java.util.ArrayList;
 public class Deck {
-    private ArrayList<Card> cards;
+    private final ArrayList<Card> cards;
     public Deck(){
         cards = new ArrayList<>();
         String[] suits = {"Hearts","Spades","Diamonds","Clubs"};
@@ -23,7 +23,7 @@ public class Deck {
     }
     public Card deal(){
         // deal the top card (if there are any cards left
-        if(cards.size() > 0){
+        if(!cards.isEmpty()){
             Card card = cards.remove(0);
             return card;
         } else {

@@ -1,23 +1,76 @@
 package com.pluralsight;
 
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Table {
-    public static void main(String[] args) {
-        Deck deck = new Deck();
-        deck.shuffle();
-        Hand p1 = new Hand();
-        Hand p2 = new Hand();
-        Hand p3 = new Hand();
+    private final Deck deck;
+    public ArrayList<BlackJackPlayer> players;
 
-        p1.deal(deck.deal());
-        p2.deal(deck.deal());
-        p3.deal(deck.deal());
-
-        p1.deal(deck.deal());
-        p2.deal(deck.deal());
-        p3.deal(deck.deal());
-
-        System.out.println("P1 hand: " +p1.getValue());
-        System.out.println("P1 hand: " +p2.getValue());
-        System.out.println("P1 hand: " +p3.getValue());
+    public Table(Deck deck) {
+        this.deck = deck;
+        players = new ArrayList<>();
     }
+
+    public void CreatePlayers() {
+        Scanner scanner = new Scanner(System.in);
+        String menu = """
+                Welcome to to 7TableCasino
+                how many player will be playing today:
+                """;
+        System.out.println(menu);
+        int numPlayers = Integer.parseInt(scanner.nextLine()) + 1;
+        for (int i = 1; i < numPlayers; i++) {
+            System.out.println("Please enter player " + i + ") name");
+            String name = scanner.nextLine();
+           this.players.add((new BlackJackPlayer(name, new Hand())));
+
+        }
+
+    }
+    public  void dealCards(BlackJackPlayer player) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Player "+player.getName()+"|");
+        boolean running = true;
+        do {
+            System.out.println(player.seeHand());
+            System.out.println(player.getHandPoint());
+            System.out.println("-Do you want (Hit/Stay) : ");
+            String input = scanner.nextLine();
+            if (input.equalsIgnoreCase("hit")){
+                player.hitMe(this.deck);
+            }
+
+            else
+                running = false;
+
+        }while (running);
+
+    }
+
+    public void initialTwoCard() {
+        for (BlackJackPlayer p : this.players){
+            p.hitMe(this.deck);
+            p.hitMe(this.deck);
+        }
+
+    }
+
+    public static void showPlayerCards(BlackJackPlayer player){
+        System.out.println(player.seeHand());
+    }
+
+    public static BlackJackPlayer pickWinner(ArrayList<BlackJackPlayer> players){
+       // we assume the first player have higherHand
+        BlackJackPlayer winner = new BlackJackPlayer("tmp",new Hand());
+        for(BlackJackPlayer player : players){
+            if (player.getHandPoint()> winner.getHandPoint())
+                winner =player;
+        }
+        return winner;
+    }
+
+
 }
+
+

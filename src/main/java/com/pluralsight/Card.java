@@ -1,8 +1,8 @@
 package com.pluralsight;
 
 public class Card {
-    private String suit;
-    private String value;
+    private final String suit;
+    private final String value;
     private boolean isFaceUp;
     public Card(String suit, String value) {
         this.suit = suit;
@@ -28,13 +28,15 @@ public class Card {
             return "#";
         }
     }
+    public String getCardFaceUp(){
+        return "Suite: "+this.suit+" Value: "+this.value;
+    }
     public int getPointValue(){
         // only return the value if the card is face up
         if(isFaceUp){
             try {
-                int value = Integer.parseInt(this.value);
-                return value;
-            } catch (NumberFormatException e) {
+                return Integer.parseInt(this.value);
+            } catch (NumberFormatException ignored) {
 
             }
             switch (this.value){
@@ -46,11 +48,17 @@ public class Card {
                     return 11;
                 }
                 default ->
-                    throw new RuntimeException("Invalid card");
+                {
+                    return 0;
+                }
             }
         } else {
             return 0;
         }
+
+    }
+    public boolean isAce(){
+        return this.value.equalsIgnoreCase("A");
 
     }
     public boolean isFaceUp(){

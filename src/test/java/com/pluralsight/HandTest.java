@@ -1,0 +1,10 @@
+package com.pluralsight;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class HandTest {
+
+    @org.junit.jupiter.api.Test
+    void getValue() {
+    }
+}
